@@ -1,0 +1,36 @@
+import React, { useState } from 'react';
+import ContentEditable from 'react-contenteditable';
+
+const TextEditor = () => {
+  const [content, setContent] = useState('');
+
+  const handleChange = (event) => {
+    setContent(event.target.value);
+  };
+
+  const handleSelection = (event) => {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const newNode = document.createElement('span');
+    if (event.target.name === 'bold') {
+      newNode.style.fontWeight = 'bold';
+    } else if (event.target.name === 'italic') {
+      newNode.style.fontStyle = 'italic';
+    }
+    range.surroundContents(newNode);
+  };
+
+  return (
+    <div>
+      <button name='bold' onClick={handleSelection}>
+        Bold
+      </button>
+      <button name='italic' onClick={handleSelection}>
+        Italic
+      </button>
+      <ContentEditable html={content} onChange={handleChange} />
+    </div>
+  );
+};
+
+export default TextEditor;
